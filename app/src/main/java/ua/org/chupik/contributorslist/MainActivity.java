@@ -4,11 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,27 +17,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recycler_view);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         loadList();
     }
 
     private void loadList(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-        GitHubService service = retrofit.create(GitHubService.class);
-        service.listContributors("JakeWharton","butterknife")
-                .subscribeOn(Schedulers.io())
+        GitHubService.getInstance()
+                .getContributors()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(users -> {
-                    UsersAdapter adapter = new UsersAdapter(users);
-                    recyclerView.setAdapter(adapter);
-                });
+                .subscribe(this::showResults);
+    }
+
+    private void showResults(List<User> users) {
+        UsersAdapter adapter = new UsersAdapter(users);
+        recyclerView.setAdapter(adapter);
     }
 }
