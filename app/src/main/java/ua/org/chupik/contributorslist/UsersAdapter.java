@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
 
-    List<User> userList;
+    private List<User> userList;
 
     public UsersAdapter(List<User> userList) {
         this.userList = userList;
@@ -27,7 +29,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(userList.get(position).getLogin());
+        User user = userList.get(position);
+        holder.textView.setText(user.getLogin());
+        Picasso.with(holder.imageView.getContext())
+                .load(user.getAvatarUrl())
+                .into(holder.imageView);
     }
 
     @Override
@@ -35,11 +41,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         return userList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textView;
-        public ImageView imageView;
-        public ViewHolder(View v) {
+        TextView textView;
+        ImageView imageView;
+        ViewHolder(View v) {
             super(v);
             imageView = v.findViewById(R.id.avatar);
             textView = v.findViewById(R.id.name);

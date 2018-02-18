@@ -7,8 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface GitHubService {
-//JakeWharton
-    //butterknife
-    @GET("repos/{owner}/{repo}/contributors")
+
+    @GET("repos/{owner}/{repo}/contributors?per_page=100")
     Observable<List<User>> listContributors(@Path("owner") String owner, @Path("repo") String repo);
 }
