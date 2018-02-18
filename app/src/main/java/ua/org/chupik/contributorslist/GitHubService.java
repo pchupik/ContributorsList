@@ -39,4 +39,8 @@ public class GitHubService {
         }
         return asyncSubject;
     }
+
+    public GitHubApi getApi() {
+        return api;
+    }
 }
