@@ -1,5 +1,7 @@
 package ua.org.chupik.contributorslist.di;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
@@ -11,7 +13,7 @@ import ua.org.chupik.contributorslist.GitHubService;
 @Module
 public class AppModule {
 
-    @Provides
+    @Provides @Singleton
     GitHubService provideGitHubService(GitHubApi api){
         return new GitHubService(api);
     }

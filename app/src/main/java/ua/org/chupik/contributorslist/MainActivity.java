@@ -9,9 +9,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import ua.org.chupik.contributorslist.di.AppComponent;
-import ua.org.chupik.contributorslist.di.AppModule;
-import ua.org.chupik.contributorslist.di.DaggerAppComponent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,10 +18,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppComponent appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule())
-                .build();
-        appComponent.inject(this);
+        ((App)getApplicationContext()).getAppComponent().inject(this);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recycler_view);
         loadList();
